@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd Frontend && npm install && npm run build"
+  },
+  "engines": {
+    "node": "18.17.1",
+    "npm": "10.1.0"
+  }
+}

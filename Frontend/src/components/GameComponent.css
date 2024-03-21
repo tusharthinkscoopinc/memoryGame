@@ -1,0 +1,76 @@
+    #game {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+    width: 100vw;
+    max-width: 480px;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: .5px;
+    width: 100%;
+    flex-grow: 1;
+    align-content: center;
+  }
+  
+ 
+  
+  .cell {
+    width: 45px;
+    height: 45px;
+    background-color: #5b41f0;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 1s ease-in-out;
+  }
+  
+  
+
+  .cell::before {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+    background-color: #fff;
+    transition: transform 0.4s;
+    border-radius: 30%;
+  }
+  
+  .cell:hover::before {
+    transform: scale(1.1);
+  }
+
+  .clicked::before {
+    background-color: #d60303;
+    animation: blink 1s ease-in-out;
+  }
+
+  .incorrect::before {
+    background-color: #ff0000;
+    animation: blink 0.5s ease-in-out;
+  }
+  
+  
+  .active::before {
+    background-color: #d60303;
+    animation: blink 1s ease-in-out infinite;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+
