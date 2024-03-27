@@ -90,7 +90,7 @@ const GameComponent = ({ onGameStarted }) => {
           setStep(step + 1);
         }
       }, 1000);
-    } else {
+    } else  {
       cell.classList.add("incorrect");
 
       setTimeout(() => {

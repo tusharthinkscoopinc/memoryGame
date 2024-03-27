@@ -13,6 +13,7 @@ import TermsAndConditions from "./components/TermsAndConditions";
 import ResetPassword from "./components/ResetPassword";
 import Homepage from "./components/Homepage";
 import GameComponent from "./components/GameComponent";
+import AdminPanel from "./components/adminPanel";
 
 function App() {
   const isValidIdPresent = () => {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/forgot-password" element={<ResetPassword/>} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions/>} />
         <Route path="/Game" element={<GameComponent/>} />
+        <Route path="/admin-panel" element={<AdminPanel/>} />
         <Route
           path="/email-verification"
           element={

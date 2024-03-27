@@ -5,7 +5,9 @@ const memoryGameSchema = new mongoose.Schema({
   email: String,
   formattedDateTime: String,
   gameResult: String,
-  correctChoice:String
+  correctChoice: String,
+  gameStartTime: Date,
+  gameEndTime: Date
 });
 
 const MemoryGame = mongoose.model('MemoryGame', memoryGameSchema);

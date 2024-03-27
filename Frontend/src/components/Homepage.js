@@ -7,32 +7,44 @@ const Homepage = () => {
   const [shouldRenderGame, setShouldRenderGame] = useState(false);
   const [hasPlayedGame, setHasPlayedGame] = useState(false);
   const [timesUp, setTimesUp] = useState(false);
-  const startTime = [14,53];
-  const endTime = [14,55];
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+
+  useEffect(() => {
+    const fetchGameTimes = async () => {
+      try {
+        const response = await fetch("/api/getGameTimes");
+        if (!response.ok) {
+          throw new Error('Failed to fetch game times');
+        }
+        const { gameStartTime, gameEndTime } = await response.json();
+        setStartTime(new Date(gameStartTime)); 
+        setEndTime(new Date(gameEndTime));
+      } catch (error) {
+        console.error("Error fetching game times:", error);
+      }
+    };
+
+    fetchGameTimes();
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const currentTime = new Date();
-      const currentTotalSeconds =
-        currentTime.getHours() * 3600 +
-        currentTime.getMinutes() * 60 +
-        currentTime.getSeconds();
+      if (startTime !== null && endTime !== null) {
+        const currentTime = new Date();
+        if (
+          currentTime.getTime() >= startTime.getTime() &&
+          currentTime.getTime() < endTime.getTime()
+        ) {
+          setShouldRenderGame(true);
+        } else {
+          setShouldRenderGame(false);
+        }
 
-      const startTimeInSeconds = startTime[0] * 3600 + startTime[1] * 60;
-      const endTimeInSeconds = endTime[0] * 3600 + endTime[1] * 60;
-
-      if (
-        currentTotalSeconds >= startTimeInSeconds &&
-        currentTotalSeconds < endTimeInSeconds
-      ) {
-        setShouldRenderGame(true);
-      } else {
-        setShouldRenderGame(false);
-      }
-
-      if (currentTotalSeconds >= endTimeInSeconds) {
-        setShouldRenderGame(false);
-        setTimesUp(true);
+        if (currentTime.getTime() >= endTime.getTime()) {
+          setShouldRenderGame(false);
+          setTimesUp(true);
+        }
       }
     }, 1000);
 
@@ -52,8 +64,9 @@ const Homepage = () => {
     if (timesUp) {
       return (
         <div className="text-red-500 flex justify-center">
-          The Time for Todays Game Has Ended Please try tomorrow on {startTime[0]}:{startTime[1]}.
+          The Time for Today's Game Has Ended. Please try again tomorrow.
         </div>
+        
       );
     } else if (shouldRenderGame && !hasPlayedGame) {
       return <GameComponent onGameStarted={onGameStartedHandler} />;
@@ -66,7 +79,7 @@ const Homepage = () => {
     } else {
       return (
         <div className="text-red-500 flex justify-center">
-          The Game Will Start on {startTime[0]}:{startTime[1]}
+          The Game Will Start at {startTime ? startTime.toLocaleTimeString() : 'unknown time'}
         </div>
       );
     }
